@@ -20,7 +20,7 @@ async function checkImage(url) {
   await axios.get(url, {
   })
     .then(() => {
-      imageExists = true;
+      imageExists = false;
     })
     .catch(() => {
       imageExists = false;
