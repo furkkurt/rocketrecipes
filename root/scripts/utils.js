@@ -7,6 +7,9 @@ const COMMUNITY_TENTH_RECIPE_URL = 'https://raw.githubusercontent.com/cse110-fa2
 const LOCAL_STORAGE_ALL_RECIPES_KEY = 'allRecipes';
 const LOCAL_STORAGE_FAVORITED_RECIPES_KEY = 'favoritedRecipes';
 
+const FIREBASE_BASE_URL = 'https://rocketrecipes-6c192-default-rtdb.firebaseio.com';
+const FIREBASE_TOKEN = 'PIxv06uYyjr2DIhum8zyJAL2SUL4slhXxCckCtzG';
+
 /**
  * @async
  * This function gets all recipes from localStorage.
@@ -187,13 +190,12 @@ export async function getBulkRecipes(recipeIds) {
  * does not exist, returns null
  */
 export async function readRecipe(id) {
-  const allRecipes = await getAllRecipes();
-  for (let i = 0; i < allRecipes.length; i += 1) {
-    if (allRecipes[i].id === id) {
-      return allRecipes[i];
-    }
+  const url = `${FIREBASE_BASE_URL}/recipes/${id}.json?auth=${FIREBASE_TOKEN}`;
+  const response = await fetch(url);
+  if (response.ok) {
+    const json = await response.json();
+    return json;
   }
-  // recipe id was not found, return null
   return null;
 }
 
